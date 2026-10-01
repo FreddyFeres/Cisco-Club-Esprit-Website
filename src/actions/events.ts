@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { EventStatus } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 // DTO pour un événement
 export interface EventInput {
@@ -13,10 +13,10 @@ export interface EventInput {
   location: string;
   capacity: number;
   budget?: number;
-  status?: EventStatus;
+  status?: string;
 }
 
-export async function getEvents(status?: EventStatus) {
+export async function getEvents(status?: string) {
   return prisma.event.findMany({
     where: status ? { status } : undefined,
     orderBy: { startDate: "asc" },
@@ -34,16 +34,88 @@ export async function getEventById(id: string) {
   });
 }
 
-export async function createEvent(data: EventInput) {
+export async function createEvent(formData: FormData) {
   try {
+    const startDate = new Date(formData.get("startDate") as string);
+    const endDate = new Date(formData.get("endDate") as string);
+    const capacity = parseInt(formData.get("capacity") as string, 10);
+    const budget = formData.get("budget") ? parseFloat(formData.get("budget") as string) : undefined;
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return { error: "Dates invalides." };
+    }
+    if (endDate < startDate) {
+      return { error: "La date de fin doit être après la date de début." };
+    }
+
     const event = await prisma.event.create({
       data: {
-        ...data,
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        category: formData.get("category") as string,
+        location: formData.get("location") as string,
+        capacity,
+        budget,
+        startDate,
+        endDate,
+        status: (formData.get("status") as string) || "BROUILLON",
       },
     });
+    revalidatePath("/events");
+    revalidatePath("/admin/events");
     return { success: true, event };
   } catch (error) {
+    console.error(error);
     return { error: "Erreur lors de la création de l'événement." };
+  }
+}
+
+export async function updateEvent(id: string, formData: FormData) {
+  try {
+    const startDate = new Date(formData.get("startDate") as string);
+    const endDate = new Date(formData.get("endDate") as string);
+    const capacity = parseInt(formData.get("capacity") as string, 10);
+    const budget = formData.get("budget") ? parseFloat(formData.get("budget") as string) : undefined;
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return { error: "Dates invalides." };
+    }
+
+    const event = await prisma.event.update({
+      where: { id },
+      data: {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        category: formData.get("category") as string,
+        location: formData.get("location") as string,
+        capacity,
+        budget,
+        startDate,
+        endDate,
+        status: (formData.get("status") as string) || "BROUILLON",
+      },
+    });
+    revalidatePath("/events");
+    revalidatePath("/admin/events");
+    return { success: true, event };
+  } catch (error) {
+    console.error(error);
+    return { error: "Erreur lors de la mise à jour de l'événement." };
+  }
+}
+
+export async function deleteEvent(id: string) {
+  try {
+    // Delete dependent records first
+    await prisma.attendance.deleteMany({ where: { eventId: id } });
+    await prisma.registration.deleteMany({ where: { eventId: id } });
+    await prisma.event.delete({ where: { id } });
+    revalidatePath("/events");
+    revalidatePath("/admin/events");
+    return { success: true };
+  } catch (error) {
+    console.error(error);
+    return { error: "Erreur lors de la suppression de l'événement." };
   }
 }
 

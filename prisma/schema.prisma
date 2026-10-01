@@ -277,3 +277,35 @@ model AuditLog {
   details   String?
   createdAt DateTime @default(now())
 }
+
+// ==========================================
+// MODULE 7 : RECRUTEMENT
+// ==========================================
+
+model Candidature {
+  id         String   @id @default(cuid())
+  firstName  String
+  lastName   String
+  email      String
+  phone      String?
+  level      String
+  specialty  String?
+  cell       String
+  motivation String?
+  status     String   @default("EN_ATTENTE") // EN_ATTENTE | ACCEPTE | REFUSE | ENTRETIEN
+  createdAt  DateTime @default(now())
+}
+
+// ==========================================
+// MODULE 8 : CONTACT
+// ==========================================
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

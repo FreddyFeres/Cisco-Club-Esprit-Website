@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { SponsorStatus } from "@prisma/client";
 
 export async function getSponsors() {
   return prisma.sponsor.findMany({
@@ -21,7 +20,7 @@ export async function createSponsor(data: { name: string, sector?: string, tier?
   }
 }
 
-export async function updateSponsorStatus(sponsorId: string, status: SponsorStatus) {
+export async function updateSponsorStatus(sponsorId: string, status: string) {
   try {
     const sponsor = await prisma.sponsor.update({
       where: { id: sponsorId },

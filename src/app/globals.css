@@ -49,26 +49,26 @@
 }
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 84% 4.9%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 84% 4.9%;
-  --primary: 192 100% 46%; /* Cisco Blue: #00BCEB */
-  --primary-foreground: 0 0% 100%;
-  --secondary: 216 71% 18%; /* Cisco Dark Blue: #0D274D */
+  --background: 0 0% 0%;
+  --foreground: 210 40% 98%;
+  --card: 0 0% 4%;
+  --card-foreground: 210 40% 98%;
+  --popover: 0 0% 4%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 192 100% 46%; /* Cisco Cyan: #00BCEB */
+  --primary-foreground: 0 0% 0%;
+  --secondary: 192 100% 12%; /* Darker cyan/blue */
   --secondary-foreground: 210 40% 98%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 174 100% 29%; /* Accent vert-cyan */
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 84.2% 60.2%;
+  --muted: 217.2 32.6% 12%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 192 100% 46%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 210 40% 98%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
   --ring: 192 100% 46%;
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 }
 
 .dark {

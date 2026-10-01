@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { MemberStatus } from "@prisma/client";
 
 export async function getMembers() {
   return prisma.member.findMany({
@@ -12,7 +11,7 @@ export async function getMembers() {
   });
 }
 
-export async function updateMemberStatus(memberId: string, status: MemberStatus) {
+export async function updateMemberStatus(memberId: string, status: string) {
   try {
     const member = await prisma.member.update({
       where: { id: memberId },
