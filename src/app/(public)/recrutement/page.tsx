@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ArrowLeft, Send, CheckCircle2, Loader2, User, Mail, Phone, GraduationCap, BookOpen, MessageSquare } from "lucide-react";
 import { submitCandidature } from "@/actions/candidatures";
 
-const itemFadeUp = {
+const itemFadeUp: any = {
   hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };

@@ -6,6 +6,7 @@ export default defineConfig({
   datasource: {
     url: "file:./dev.db",
   },
+  // @ts-ignore
   migrate: {
     async adapter() {
       const { PrismaBetterSqlite3 } = await import(
