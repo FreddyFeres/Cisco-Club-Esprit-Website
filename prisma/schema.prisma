@@ -1,0 +1,279 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ==========================================
+// MODULE 1 & 6 : AUTH & RESSOURCES HUMAINES
+// ==========================================
+
+// SQLite ne supporte pas les enums natifs — on utilise String avec valeurs prédéfinies
+// Role: VISITEUR | MEMBRE | RESPONSABLE_CELLULE | RH | TRESORIER_SPONSORING | ADMIN
+// MemberStatus: CANDIDAT | PERIODE_ESSAI | ACTIF | INACTIF | ALUMNI
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?
+  firstName     String
+  lastName      String
+  phone         String?
+  level         String?   // ex: 3ème année
+  specialty     String?   // ex: Info/Télécom
+  role          String    @default("VISITEUR")
+  avatarUrl     String?
+  bio           String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  memberProfile      Member?
+  registrations      Registration[]
+  attendances        Attendance[]
+  organizedMeetings  Meeting[]           @relation("MeetingOrganizer")
+  meetingInvitations MeetingParticipant[]
+  auditLogs          AuditLog[]
+}
+
+model Member {
+  id             String    @id @default(cuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status         String    @default("CANDIDAT")
+  joinDate       DateTime?
+  leaveDate      DateTime?
+  cellId         String?
+  cell           Cell?     @relation(fields: [cellId], references: [id])
+  position       String?   // ex: Designer, Développeur...
+  certifications String?   // JSON string: ["CCNA", "DevNet"] (SQLite no arrays)
+  skills         String?   // JSON string
+  availabilities String?
+
+  evaluations    Evaluation[]
+  justifications AbsenceJustification[]
+}
+
+model Cell {
+  id          String   @id @default(cuid())
+  name        String   @unique // Technique, Event, Com, Sponsor...
+  description String?
+  members     Member[]
+}
+
+model Evaluation {
+  id          String   @id @default(cuid())
+  memberId    String
+  member      Member   @relation(fields: [memberId], references: [id])
+  evaluatorId String
+  score       Int      // ex: sur 100
+  feedback    String
+  period      String   // ex: Semestre 1 2024
+  createdAt   DateTime @default(now())
+}
+
+// ==========================================
+// MODULE 2 : ÉVÉNEMENTS
+// ==========================================
+
+// EventStatus: BROUILLON | PUBLIE | COMPLET | TERMINE | ANNULE
+
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  coverUrl    String?
+  category    String
+  startDate   DateTime
+  endDate     DateTime
+  location    String
+  capacity    Int
+  budget      Float?
+  status      String   @default("BROUILLON")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  registrations Registration[]
+  attendances   Attendance[]
+}
+
+model Registration {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  eventId    String
+  event      Event    @relation(fields: [eventId], references: [id])
+  isWaitlist Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, eventId])
+}
+
+// ==========================================
+// MODULE 3 : RÉUNIONS
+// ==========================================
+
+model Meeting {
+  id          String   @id @default(cuid())
+  title       String
+  objective   String?
+  type        String   // Bureau, Cellule, Générale...
+  startDate   DateTime
+  duration    Int      // en minutes
+  location    String
+  organizerId String
+  organizer   User     @relation("MeetingOrganizer", fields: [organizerId], references: [id])
+
+  participants MeetingParticipant[]
+  agendaItems  AgendaItem[]
+  minutes      MeetingMinutes?
+  actionItems  ActionItem[]
+}
+
+model MeetingParticipant {
+  meetingId String
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    String  @default("PENDING") // PENDING, ACCEPTED, DECLINED, MAYBE
+
+  @@id([meetingId, userId])
+}
+
+model AgendaItem {
+  id          String  @id @default(cuid())
+  meetingId   String
+  meeting     Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  title       String
+  durationEst Int     // minutes estimées
+  order       Int
+}
+
+model MeetingMinutes {
+  id        String   @id @default(cuid())
+  meetingId String   @unique
+  meeting   Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model ActionItem {
+  id         String   @id @default(cuid())
+  meetingId  String
+  meeting    Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  task       String
+  assigneeId String
+  dueDate    DateTime
+  status     String   @default("TODO") // TODO, IN_PROGRESS, DONE
+}
+
+// ==========================================
+// MODULE 4 : ABSENCES & PRÉSENCES
+// ==========================================
+
+// AttendanceStatus: PRESENT | ABSENT | RETARD | EXCUSE
+
+model Attendance {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  eventId    String?
+  event      Event?   @relation(fields: [eventId], references: [id])
+  status     String   @default("ABSENT")
+  scanMethod String   @default("QR") // QR, MANUAL, GEOLOC
+  timestamp  DateTime @default(now())
+
+  @@unique([userId, eventId])
+}
+
+model AbsenceJustification {
+  id         String   @id @default(cuid())
+  memberId   String
+  member     Member   @relation(fields: [memberId], references: [id])
+  reason     String
+  startDate  DateTime
+  endDate    DateTime
+  attachment String?
+  status     String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  comment    String?
+  createdAt  DateTime @default(now())
+}
+
+// ==========================================
+// MODULE 5 : SPONSORING & PARTENARIATS
+// ==========================================
+
+// SponsorStatus: PROSPECT | NEGOTIATION | SIGNED | ACTIVE | ENDED | LOST
+
+model Sponsor {
+  id      String  @id @default(cuid())
+  name    String
+  logoUrl String?
+  sector  String?
+  tier    String? // OR, ARGENT, MEDIA...
+  website String?
+  status  String  @default("PROSPECT")
+
+  contacts  SponsorContact[]
+  deals     Deal[]
+  documents Document[]
+}
+
+model SponsorContact {
+  id          String  @id @default(cuid())
+  sponsorId   String
+  sponsor     Sponsor @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  name        String
+  role        String?
+  email       String
+  phone       String?
+  linkedinUrl String?
+}
+
+model Deal {
+  id              String    @id @default(cuid())
+  sponsorId       String
+  sponsor         Sponsor   @relation(fields: [sponsorId], references: [id])
+  amountEstimated Float
+  amountReceived  Float     @default(0)
+  probability     Int       // de 0 à 100
+  ownerId         String    // L'admin ou trésorier responsable
+  nextActionDate  DateTime?
+  deliverables    Deliverable[]
+}
+
+model Deliverable {
+  id          String  @id @default(cuid())
+  dealId      String
+  deal        Deal    @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  description String
+  isDone      Boolean @default(false)
+  proofUrl    String?
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  sponsorId String
+  sponsor   Sponsor  @relation(fields: [sponsorId], references: [id])
+  type      String   // CONTRAT, FACTURE, PLAQUETTE
+  fileUrl   String
+  status    String   @default("DRAFT")
+  createdAt DateTime @default(now())
+}
+
+// ==========================================
+// INFRASTRUCTURE : AUDIT
+// ==========================================
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String   // ex: "USER_DELETED", "ROLE_CHANGED"
+  entity    String   // ex: "User", "Event"
+  entityId  String
+  details   String?
+  createdAt DateTime @default(now())
+}
