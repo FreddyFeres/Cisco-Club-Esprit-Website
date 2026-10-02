@@ -146,15 +146,17 @@ export default function Home() {
   ];
 
   const board = [
-    { file: "825256751_1392173389793399_4447884036438255330_n.png", role: "President" },
-    { file: "825258993_2098424957703198_1660312889605545020_n.png", role: "Vice-President" },
-    { file: "828304704_2449853345539469_1878577320317306014_n.png", role: "Technical Lead" },
-    { file: "828479278_1816835086404204_8114802770815448657_n.png", role: "Events Manager" },
-    { file: "829016119_1138385788618005_2140265998578352284_n.png", role: "HR Manager" },
-    { file: "829554237_1576705584196636_704206360650357138_n.png", role: "Sponsorship Manager" },
-    { file: "830056050_2658834327934008_3914826303594024668_n.png", role: "Marketing Lead" },
-    { file: "830937011_1726866381759377_580913927035532552_n.png", role: "Design Manager" },
-    { file: "833573074_1054903407537704_5746676480335104443_n.png", role: "Community Manager" },
+    { file: "830937011_1726866381759377_580913927035532552_n.png", role: "Presidente" },
+    { file: "833573074_1054903407537704_5746676480335104443_n.png", role: "Vice-President" },
+    { file: "828479278_1816835086404204_8114802770815448657_n.png", role: "Treasurer" },
+    { file: "829554237_1576705584196636_704206360650357138_n.png", role: "HR Manager" },
+    { file: "825258993_2098424957703198_1660312889605545020_n.png", role: "Event Manager" },
+    { file: "828304704_2449853345539469_1878577320317306014_n.png", role: "Event Manager Assistant" },
+    { file: "825258995_28946344038317166_4467828120629504236_n.png", role: "Logistics Manager" },
+    { file: "830056050_2658834327934008_3914826303594024668_n.png", role: "Media Supervisor" },
+    { file: "829016119_1138385788618005_2140265998578352284_n.png", role: "Media Manager" },
+    { file: "825308080_1090901603659220_5551465799695238945_n.png", role: "Media Manager Assistant" },
+    { file: "825256751_1392173389793399_4447884036438255330_n.png", role: "Sponsorship Manager Assistant" },
   ];
 
   return (
