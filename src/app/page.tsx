@@ -248,11 +248,9 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-black/65 z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/70 z-10" />
-          {/* Le fichier hero-bg.mp4 était trop lourd pour Cloudflare (>25MB). 
-              Hébergez-le sur YouTube ou AWS S3 et mettez le lien ici : */}
-          {/* <video autoPlay loop muted playsInline className="object-cover w-full h-full opacity-60">
-            <source src="VOTRE_LIEN_VIDEO_EXTERNE.mp4" type="video/mp4" />
-          </video> */}
+          <video autoPlay loop muted playsInline className="object-cover w-full h-full opacity-60">
+            <source src="/videos/CISCO.mp4" type="video/mp4" />
+          </video>
         </div>
         <div className="absolute inset-0 z-10 opacity-10"
           style={{ backgroundImage: "linear-gradient(rgba(6,182,212,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.3) 1px, transparent 1px)", backgroundSize: "80px 80px" }} />
