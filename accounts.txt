@@ -1,0 +1,20 @@
+Comptes de test accessibles sur le site (Base de données de développement)
+--------------------------------------------------------------------------------
+
+Tous les comptes ci-dessous partagent le même mot de passe par défaut :
+Mot de passe : Cisco@2024
+
+| Prénom & Nom          | Email                              | Rôle                  |
+|-----------------------|------------------------------------|-----------------------|
+| Sayad Touati          | touati.sayad@esprit.tn             | PRESIDENT             |
+| Mokhtar Laourine      | laourine.mokhtar@esprit.tn         | VICE_PRESIDENT        |
+| Zaineb Trad           | trad.zaineb@esprit.tn              | ADMIN                 |
+| Maram Jaouadi         | jaouadi.maram@esprit.tn            | SECRETAIRE_GENERAL    |
+| Maram Azri            | azri.maram@esprit.tn               | RH                    |
+| Faten Karou           | karou.faten@esprit.tn              | TRESORIER_SPONSORING  |
+| Ines Bouzid           | bouzid.ines@esprit.tn              | RESPONSABLE_CELLULE   |
+| Imen Cheikh           | cheikh.imen@esprit.tn              | RESPONSABLE_CELLULE   |
+| Malek Nahal           | nahal.malek@esprit.tn              | RESPONSABLE_CELLULE   |
+| Mohamed Amine Lbabda  | lbabda.mohamedamine@esprit.tn      | ADMIN                 |
+
+Note : Ces comptes proviennent du fichier de seed (prisma/seed.ts) utilisé pour initialiser la base de données.

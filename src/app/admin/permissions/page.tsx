@@ -8,8 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Shield, ShieldAlert, CheckCircle2, AlertCircle, Search } from "lucide-react";
-import { getUsers, updateUserRole } from "@/actions/users";
+import { Shield, ShieldAlert, CheckCircle2, AlertCircle, Search, Trash2, UserPlus, X } from "lucide-react";
+import { getUsers, updateUserRole, createUser, deleteUser } from "@/actions/users";
 
 const ROLES = [
   "MEMBRE",
@@ -38,6 +38,8 @@ export default function PermissionsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [isPending, startTransition] = useTransition();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [addForm, setAddForm] = useState({ firstName: "", lastName: "", email: "", role: "MEMBRE" });
 
   const load = async () => {
     setLoading(true);
@@ -55,8 +57,40 @@ export default function PermissionsPage() {
       const res = await updateUserRole(userId, newRole);
       if (res.success) {
         setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
+        import('sonner').then(({ toast }) => toast.success('Rôle mis à jour avec succès', { description: `Nouveau rôle attribué.` }));
       } else {
         alert(res.error);
+        import('sonner').then(({ toast }) => toast.error('Erreur', { description: res.error }));
+      }
+    });
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    if (!confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) return;
+    startTransition(async () => {
+      const res = await deleteUser(userId);
+      if (res.success) {
+        setUsers(users.filter(u => u.id !== userId));
+        import('sonner').then(({ toast }) => toast.success('Utilisateur supprimé avec succès'));
+      } else {
+        alert(res.error);
+        import('sonner').then(({ toast }) => toast.error('Erreur', { description: res.error }));
+      }
+    });
+  };
+
+  const handleAddUser = (e: React.FormEvent) => {
+    e.preventDefault();
+    startTransition(async () => {
+      const res = await createUser(addForm);
+      if (res.success) {
+        setUsers([res.user, ...users]);
+        setShowAddModal(false);
+        setAddForm({ firstName: "", lastName: "", email: "", role: "MEMBRE" });
+        import('sonner').then(({ toast }) => toast.success('Utilisateur créé avec succès'));
+      } else {
+        alert(res.error);
+        import('sonner').then(({ toast }) => toast.error('Erreur', { description: res.error }));
       }
     });
   };
@@ -102,15 +136,23 @@ export default function PermissionsPage() {
                 <CardTitle className="text-white text-xl">Contrôle d&apos;accès</CardTitle>
                 <CardDescription className="text-gray-400">Modifiez instantanément les privilèges des utilisateurs</CardDescription>
               </div>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Rechercher par nom ou email..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="h-10 w-[280px] rounded-xl border border-white/10 bg-white/5 px-3 pl-9 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
-                />
+              <div className="flex gap-3 relative">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
+                  <input
+                    type="text"
+                    placeholder="Rechercher par nom ou email..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="h-10 w-[240px] rounded-xl border border-white/10 bg-white/5 px-3 pl-9 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  />
+                </div>
+                <Button 
+                  onClick={() => setShowAddModal(true)}
+                  className="bg-cyan-500 text-black hover:bg-cyan-400 font-semibold rounded-xl h-10"
+                >
+                  <UserPlus className="h-4 w-4 mr-2" /> Ajouter
+                </Button>
               </div>
             </div>
           </CardHeader>
@@ -150,16 +192,27 @@ export default function PermissionsPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                          <select
-                            value={user.role}
-                            disabled={isPending || user.email === "feresfatmi07@gmail.com"}
-                            onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                            className="h-8 w-48 rounded-lg border border-white/10 bg-black px-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {ROLES.map(role => (
-                              <option key={role} value={role}>{role}</option>
-                            ))}
-                          </select>
+                          <div className="flex items-center justify-end gap-2">
+                            <select
+                              value={user.role}
+                              disabled={isPending || user.email === "feresfatmi07@gmail.com"}
+                              onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                              className="h-8 w-40 rounded-lg border border-white/10 bg-black px-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {ROLES.map(role => (
+                                <option key={role} value={role}>{role}</option>
+                              ))}
+                            </select>
+                            <Button 
+                              variant="destructive" 
+                              size="icon" 
+                              className="h-8 w-8 bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 rounded-lg"
+                              disabled={isPending || user.email === "feresfatmi07@gmail.com"}
+                              onClick={() => handleDeleteUser(user.id)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -177,6 +230,44 @@ export default function PermissionsPage() {
           </CardContent>
         </Card>
       </motion.div>
+
+      {/* Add User Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+            <button onClick={() => setShowAddModal(false)} className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors">
+              <X className="h-5 w-5" />
+            </button>
+            <h3 className="text-xl font-bold text-white mb-6">Ajouter un utilisateur</h3>
+            <form onSubmit={handleAddUser} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm text-gray-400 font-medium">Prénom *</label>
+                  <input required type="text" value={addForm.firstName} onChange={e => setAddForm({...addForm, firstName: e.target.value})} className="w-full h-10 rounded-xl border border-white/10 bg-white/5 px-3 text-sm text-white focus:outline-none focus:border-cyan-500/50" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm text-gray-400 font-medium">Nom *</label>
+                  <input required type="text" value={addForm.lastName} onChange={e => setAddForm({...addForm, lastName: e.target.value})} className="w-full h-10 rounded-xl border border-white/10 bg-white/5 px-3 text-sm text-white focus:outline-none focus:border-cyan-500/50" />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm text-gray-400 font-medium">Email *</label>
+                <input required type="email" value={addForm.email} onChange={e => setAddForm({...addForm, email: e.target.value})} className="w-full h-10 rounded-xl border border-white/10 bg-white/5 px-3 text-sm text-white focus:outline-none focus:border-cyan-500/50" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm text-gray-400 font-medium">Rôle *</label>
+                <select value={addForm.role} onChange={e => setAddForm({...addForm, role: e.target.value})} className="w-full h-10 rounded-xl border border-white/10 bg-black px-3 text-sm text-white focus:outline-none focus:border-cyan-500/50">
+                  {ROLES.map(role => <option key={role} value={role}>{role}</option>)}
+                </select>
+              </div>
+              <div className="pt-4 flex justify-end gap-3">
+                <Button type="button" variant="outline" onClick={() => setShowAddModal(false)} className="rounded-xl border-white/10 bg-transparent text-gray-400 hover:text-white">Annuler</Button>
+                <Button type="submit" disabled={isPending} className="rounded-xl bg-cyan-500 text-black hover:bg-cyan-400 font-semibold">{isPending ? "Ajout..." : "Ajouter"}</Button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </AdminShell>
   );
 }

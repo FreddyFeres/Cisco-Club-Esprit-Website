@@ -59,8 +59,10 @@ export default function RecrutementPage() {
     setLoading(false);
     if (res.error) {
       setError(res.error);
+      import("sonner").then(({ toast }) => toast.error("Erreur", { description: res.error }));
     } else {
       setSubmitted(true);
+      import("sonner").then(({ toast }) => toast.success("Candidature envoyée avec succès"));
     }
   };
 

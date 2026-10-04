@@ -24,6 +24,7 @@ type Event = {
   status: string;
   startDate: Date | string;
   endDate: Date | string;
+  coverUrl?: string | null;
 };
 
 // ── Constants ──────────────────────────────────────────────────────
@@ -123,10 +124,17 @@ function EventModal({
             </div>
           )}
 
-          {/* Title */}
-          <div>
-            <label className={labelCls}><AlignLeft className="inline h-3.5 w-3.5 mr-1" />Titre *</label>
-            <input name="title" required defaultValue={event?.title} placeholder="Bootcamp CCNA — Module 1" className={inputCls} />
+          {/* Title and Cover */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}><AlignLeft className="inline h-3.5 w-3.5 mr-1" />Titre *</label>
+              <input name="title" required defaultValue={event?.title} placeholder="Bootcamp CCNA — Module 1" className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Affiche / Photo (Optionnel)</label>
+              <input type="file" name="cover" accept="image/*" className={inputCls + " file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-black hover:file:bg-cyan-400"} />
+              {event?.coverUrl && <p className="text-xs text-cyan-400 mt-1">Image actuelle : {event.coverUrl.split('/').pop()}</p>}
+            </div>
           </div>
 
           {/* Description */}
@@ -416,6 +424,11 @@ export default function AdminEventsPage() {
                             <div className="flex items-center gap-2">
                               <Wallet className="h-4 w-4 text-gray-500 shrink-0" />
                               <span>Budget : <span className="font-bold text-white">{event.budget.toLocaleString()} TND</span></span>
+                            </div>
+                          )}
+                          {event.coverUrl && (
+                            <div className="flex items-center gap-2 mt-2">
+                              <img src={event.coverUrl} alt={event.title} className="h-12 w-12 object-cover rounded-md border border-white/10" />
                             </div>
                           )}
                         </div>

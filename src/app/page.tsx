@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import {
   ArrowRight, Activity, Globe, Shield, Zap, Users, Award,
-  Mail, MapPin, ExternalLink, Lightbulb, Trophy, BookOpen, Network, Settings
+  Mail, MapPin, ExternalLink, Lightbulb, Trophy, BookOpen, Network, Settings, Phone
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -65,50 +65,131 @@ function ContactSection() {
 
   return (
     <section className="relative py-24 bg-black px-6" id="contact-form">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-14">
           <h2 className="text-3xl md:text-5xl font-black mb-4">Contactez-nous</h2>
-          <p className="text-gray-400">Vous avez une question, une proposition de partenariat ou vous souhaitez simplement nous dire bonjour ? Laissez-nous un message !</p>
+          <p className="text-gray-400 max-w-xl mx-auto">Vous avez une question, une proposition de partenariat ou vous souhaitez simplement nous dire bonjour ? Laissez-nous un message !</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white/[0.02] border border-white/10 p-8 rounded-3xl backdrop-blur-xl">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm text-gray-300 font-medium">Nom complet *</label>
-              <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                className="w-full h-11 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20"
-                placeholder="Ex: Ahmed Ben Ali" />
+        <div className="grid lg:grid-cols-2 gap-10 items-start">
+          {/* ── Developer Contact Card ── */}
+          <div className="space-y-6">
+            {/* Profile card */}
+            <div className="relative bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 rounded-3xl p-8 backdrop-blur-xl overflow-hidden group hover:border-cyan-500/30 transition-all duration-500">
+              {/* Glow */}
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-all duration-700" />
+
+              {/* Header */}
+              <div className="flex items-center gap-5 mb-8 relative z-10">
+                <div className="relative">
+                  <div className="h-20 w-20 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.4)] overflow-hidden border border-cyan-500/30 bg-white/5">
+                    <img src="/feres.jpg" alt="Feres Fatmi" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 h-5 w-5 bg-green-400 rounded-full border-2 border-black" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-white">Feres Fatmi</h3>
+                  <p className="text-cyan-400 font-semibold text-sm leading-tight mt-0.5">Business Analyst</p>
+                  <p className="text-cyan-400 font-semibold text-sm">& Media Supervisor</p>
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <div className="h-1.5 w-1.5 bg-cyan-400 rounded-full animate-pulse" />
+                    <span className="text-xs text-gray-400">Cisco Club Esprit</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact details */}
+              <div className="space-y-4 relative z-10">
+                <a href="tel:+21696973479" className="flex items-center gap-4 group/item hover:bg-white/5 p-3 rounded-xl transition-all duration-200 -mx-3">
+                  <div className="h-10 w-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 group-hover/item:bg-cyan-500/20 transition-colors">
+                    <Phone className="h-4.5 w-4.5 text-cyan-400 h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Téléphone</p>
+                    <p className="text-white font-semibold">+216 96 973 479</p>
+                  </div>
+                </a>
+
+                <a href="mailto:feresfatmi07@gmail.com" className="flex items-center gap-4 group/item hover:bg-white/5 p-3 rounded-xl transition-all duration-200 -mx-3">
+                  <div className="h-10 w-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 group-hover/item:bg-cyan-500/20 transition-colors">
+                    <Mail className="h-4 w-4 text-cyan-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Email</p>
+                    <p className="text-white font-semibold">feresfatmi07@gmail.com</p>
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-4 p-3 -mx-3">
+                  <div className="h-10 w-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
+                    <MapPin className="h-4 w-4 text-cyan-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Adresse</p>
+                    <p className="text-white font-semibold">Ariana, Tunis</p>
+                  </div>
+                </div>
+
+                <a href="https://linkedin.com/in/feresfatmi" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group/item hover:bg-white/5 p-3 rounded-xl transition-all duration-200 -mx-3">
+                  <div className="h-10 w-10 rounded-xl bg-blue-600/10 border border-blue-600/20 flex items-center justify-center shrink-0 group-hover/item:bg-blue-600/20 transition-colors">
+                    <ExternalLink className="h-4 w-4 text-blue-400" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">LinkedIn</p>
+                    <p className="text-blue-400 font-semibold hover:text-blue-300 transition-colors">linkedin.com/in/feresfatmi</p>
+                  </div>
+                </a>
+              </div>
+
+              {/* Bottom CTA */}
+              <div className="mt-8 pt-6 border-t border-white/5 relative z-10">
+                <p className="text-xs text-gray-500 text-center">
+                  Développé avec ❤️ pour <span className="text-cyan-400 font-semibold">Cisco Club Esprit</span>
+                </p>
+              </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm text-gray-300 font-medium">Email *</label>
-              <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
-                className="w-full h-11 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20"
-                placeholder="ahmed@example.com" />
+          </div>
+
+          {/* ── Contact Form ── */}
+          <form onSubmit={handleSubmit} className="space-y-6 bg-white/[0.02] border border-white/10 p-8 rounded-3xl backdrop-blur-xl">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="text-sm text-gray-300 font-medium">Nom complet *</label>
+                <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
+                  className="w-full h-11 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20"
+                  placeholder="Ex: Ahmed Ben Ali" />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm text-gray-300 font-medium">Email *</label>
+                <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+                  className="w-full h-11 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20"
+                  placeholder="ahmed@example.com" />
+              </div>
             </div>
-          </div>
-          
-          <div className="space-y-2">
-            <label className="text-sm text-gray-300 font-medium">Sujet</label>
-            <input value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })}
-              className="w-full h-11 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20"
-              placeholder="Objet de votre message" />
-          </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm text-gray-300 font-medium">Sujet</label>
+              <input value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })}
+                className="w-full h-11 rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20"
+                placeholder="Objet de votre message" />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-sm text-gray-300 font-medium">Message *</label>
-            <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={5}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 resize-none"
-              placeholder="Comment pouvons-nous vous aider ?" />
-          </div>
+            <div className="space-y-2">
+              <label className="text-sm text-gray-300 font-medium">Message *</label>
+              <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={6}
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 resize-none"
+                placeholder="Comment pouvons-nous vous aider ?" />
+            </div>
 
-          {status === "error" && <p className="text-red-400 text-sm bg-red-500/10 p-3 rounded-xl border border-red-500/20">{errorMsg}</p>}
-          {status === "success" && <p className="text-green-400 text-sm bg-green-500/10 p-3 rounded-xl border border-green-500/20">Votre message a été envoyé avec succès ! Nous vous répondrons bientôt.</p>}
+            {status === "error" && <p className="text-red-400 text-sm bg-red-500/10 p-3 rounded-xl border border-red-500/20">{errorMsg}</p>}
+            {status === "success" && <p className="text-green-400 text-sm bg-green-500/10 p-3 rounded-xl border border-green-500/20">Votre message a été envoyé avec succès ! Nous vous répondrons bientôt.</p>}
 
-          <button type="submit" disabled={status === "loading"}
-            className="w-full h-12 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-colors disabled:opacity-50">
-            {status === "loading" ? "Envoi en cours..." : "Envoyer le message"}
-          </button>
-        </form>
+            <button type="submit" disabled={status === "loading"}
+              className="w-full h-12 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-colors disabled:opacity-50 shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]">
+              {status === "loading" ? "Envoi en cours..." : "Envoyer le message"}
+            </button>
+          </form>
+        </div>
       </div>
     </section>
   );
@@ -148,7 +229,7 @@ export default function Home() {
   const board = [
     { file: "830937011_1726866381759377_580913927035532552_n.png", role: "Presidente" },
     { file: "833573074_1054903407537704_5746676480335104443_n.png", role: "Vice-President" },
-    { file: "828479278_1816835086404204_8114802770815448657_n.png", role: "Treasurer" },
+    { file: "faten_karou.png", role: "Treasurer" },
     { file: "829554237_1576705584196636_704206360650357138_n.png", role: "HR Manager" },
     { file: "825258993_2098424957703198_1660312889605545020_n.png", role: "Event Manager" },
     { file: "828304704_2449853345539469_1878577320317306014_n.png", role: "Event Manager Assistant" },
@@ -195,9 +276,17 @@ export default function Home() {
             <Link href="/recrutement" className="hover:text-cyan-400 transition-colors font-semibold text-cyan-300">Recrutement</Link>
             <Link href="#contact" className="hover:text-cyan-400 transition-colors">Contact</Link>
           </div>
-          <Button asChild variant="outline" className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 bg-transparent rounded-full px-6">
-            <Link href="/auth/login">Acces Portail</Link>
-          </Button>
+          {session?.user ? (
+            <Button asChild variant="outline" className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 bg-transparent rounded-full px-6">
+              <Link href={isAdmin ? "/admin" : "/admin/profile"}>
+                {isAdmin ? "Espace Admin" : "Mon Espace"}
+              </Link>
+            </Button>
+          ) : (
+            <Button asChild variant="outline" className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 bg-transparent rounded-full px-6">
+              <Link href="/auth/login">Accès Portail</Link>
+            </Button>
+          )}
         </motion.nav>
 
         <main className="relative z-20 flex flex-col items-center justify-center min-h-[calc(100vh-90px)] px-6 text-center">
@@ -212,20 +301,20 @@ export default function Home() {
               </span>
             </motion.div>
             <motion.h1 variants={itemFadeUp}
-              className="text-6xl md:text-8xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-cyan-400"
+              className="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-100 to-cyan-400"
             >
               Build. Secure.<br className="hidden md:block" /> Connect.
             </motion.h1>
-            <motion.p variants={itemFadeUp} className="text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed">
+            <motion.p variants={itemFadeUp} className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed">
               Le <span className="text-cyan-400 font-semibold">Cisco Club ESPRIT</span> forme les ingenieurs reseau de demain a travers des bootcamps, hackathons et certifications de niveau professionnel.
             </motion.p>
-            <motion.div variants={itemFadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+            <motion.div variants={itemFadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 md:mt-10">
               <Link href="/events"
-                className="inline-flex items-center justify-center rounded-full bg-cyan-500 text-black hover:bg-cyan-400 hover:scale-105 transition-all shadow-[0_0_30px_rgba(6,182,212,0.5)] text-base px-10 h-14 font-bold">
-                Explorer les Evenements <ArrowRight className="ml-2 h-5 w-5" />
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-cyan-500 text-black hover:bg-cyan-400 hover:scale-105 transition-all shadow-[0_0_30px_rgba(6,182,212,0.5)] text-sm md:text-base px-8 md:px-10 h-12 md:h-14 font-bold">
+                Explorer les Evenements <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
               </Link>
               <Link href="#about"
-                className="inline-flex items-center justify-center rounded-full border border-white/20 text-white hover:bg-white/10 bg-black/20 backdrop-blur-md text-base px-10 h-14">
+                className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/20 text-white hover:bg-white/10 bg-black/20 backdrop-blur-md text-sm md:text-base px-8 md:px-10 h-12 md:h-14">
                 Decouvrir le Club
               </Link>
             </motion.div>
@@ -235,12 +324,12 @@ export default function Home() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.4, duration: 0.8 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-8 md:gap-16"
+            className="mt-12 md:mt-0 md:absolute md:bottom-10 left-1/2 md:-translate-x-1/2 flex flex-wrap justify-center gap-6 md:gap-16 w-full px-4"
           >
             {[["150+", "Membres Actifs"], ["20+", "Evenements/An"], ["4", "Sponsors Officiels"], ["5", "Cellules"]].map(([num, label]) => (
-              <div key={label} className="text-center">
+              <div key={label} className="text-center min-w-[100px]">
                 <div className="text-2xl md:text-3xl font-bold text-white">{num}</div>
-                <div className="text-xs text-cyan-400 mt-1 font-medium uppercase tracking-wider">{label}</div>
+                <div className="text-[10px] md:text-xs text-cyan-400 mt-1 font-medium uppercase tracking-wider">{label}</div>
               </div>
             ))}
           </motion.div>

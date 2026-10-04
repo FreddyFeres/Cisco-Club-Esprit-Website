@@ -110,6 +110,16 @@ const PREVIOUS_EVENTS = [
       { type: "image", url: "/events/hackathon/696232724_17893937838463103_4924111241544463550_n..webp" },
       { type: "image", url: "/events/hackathon/696272800_17894081226463103_8398189424760840779_n..webp" },
     ]
+  },
+  {
+    id: "real-madrid",
+    name: "CISCO Global Challenge (Real Madrid)",
+    description: "Lors du CISCO Global Challenge (compétition Real Madrid), une compétition internationale de type Capture the Flag axée sur la cybersécurité, les réseaux et la transformation numérique, une équipe du Cisco Club Esprit s'est brillamment illustrée en décrochant la 6ᵉ place mondiale ainsi que la 3ᵉ place dans la région Europe, Afrique et Moyen-Orient. Organisé en partenariat avec Cisco, cet événement propose aux participants de résoudre des cas pratiques d'ingénierie réseau et de sécurité informatique inspirés des infrastructures connectées du stade Santiago Bernabéu, offrant aux grands gagnants l'opportunité de découvrir les coulisses techniques du Real Madrid et d'assister à un match de La Liga en accès VIP.",
+    media: [
+      { type: "video", url: "/events/cisco-real-madrid/AQPDGspE1qhyRmTGzjWKakQpffUV3SnAzHr1gnoRnCOcE6FbwWZrhHlvdie1lEA2BICFHF2m0MEj3r0QiBKpc4-891z6TPWOdNj61J0e0lfHjw.mp4" },
+      { type: "image", url: "/events/cisco-real-madrid/734461497_1073551768347076_4490303548646930183_n.jpg" },
+      { type: "image", url: "/events/cisco-real-madrid/769374928_1404190074924371_6312008211041679123_n.jpg" }
+    ]
   }
 ];
 

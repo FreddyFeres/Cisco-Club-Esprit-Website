@@ -52,10 +52,17 @@ export default function ProfilePage() {
     const formData = new FormData(e.currentTarget);
     try {
       const res = await updateProfile(formData);
-      if (res.error) setError(res.error);
-      else setSuccess(true);
+      if (res.error) {
+        setError(res.error);
+        import("sonner").then(({ toast }) => toast.error(res.error));
+      } else {
+        setSuccess(true);
+        import("sonner").then(({ toast }) => toast.success("Profil mis à jour avec succès"));
+      }
     } catch {
-      setError("Une erreur inattendue s'est produite.");
+      const msg = "Une erreur inattendue s'est produite.";
+      setError(msg);
+      import("sonner").then(({ toast }) => toast.error(msg));
     } finally {
       setLoading(false);
     }

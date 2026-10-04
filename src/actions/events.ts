@@ -2,6 +2,9 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
+import { v4 as uuidv4 } from "uuid";
 
 // DTO pour un événement
 export interface EventInput {
@@ -48,6 +51,18 @@ export async function createEvent(formData: FormData) {
       return { error: "La date de fin doit être après la date de début." };
     }
 
+    let coverUrl = undefined;
+    const coverFile = formData.get("cover") as File | null;
+    if (coverFile && coverFile.size > 0) {
+      const buffer = Buffer.from(await coverFile.arrayBuffer());
+      const ext = path.extname(coverFile.name) || ".jpg";
+      const filename = `${Date.now()}-${Math.round(Math.random() * 1000)}${ext}`;
+      const uploadDir = path.join(process.cwd(), "public/uploads");
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(path.join(uploadDir, filename), buffer);
+      coverUrl = `/uploads/${filename}`;
+    }
+
     const event = await prisma.event.create({
       data: {
         title: formData.get("title") as string,
@@ -58,6 +73,7 @@ export async function createEvent(formData: FormData) {
         budget,
         startDate,
         endDate,
+        coverUrl,
         status: (formData.get("status") as string) || "BROUILLON",
       },
     });
@@ -81,6 +97,18 @@ export async function updateEvent(id: string, formData: FormData) {
       return { error: "Dates invalides." };
     }
 
+    let coverUrl = undefined;
+    const coverFile = formData.get("cover") as File | null;
+    if (coverFile && coverFile.size > 0) {
+      const buffer = Buffer.from(await coverFile.arrayBuffer());
+      const ext = path.extname(coverFile.name) || ".jpg";
+      const filename = `${Date.now()}-${Math.round(Math.random() * 1000)}${ext}`;
+      const uploadDir = path.join(process.cwd(), "public/uploads");
+      await mkdir(uploadDir, { recursive: true });
+      await writeFile(path.join(uploadDir, filename), buffer);
+      coverUrl = `/uploads/${filename}`;
+    }
+
     const event = await prisma.event.update({
       where: { id },
       data: {
@@ -92,6 +120,7 @@ export async function updateEvent(id: string, formData: FormData) {
         budget,
         startDate,
         endDate,
+        ...(coverUrl ? { coverUrl } : {}),
         status: (formData.get("status") as string) || "BROUILLON",
       },
     });

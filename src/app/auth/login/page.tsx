@@ -34,7 +34,7 @@ export default function LoginPage() {
       const { getSession } = await import("next-auth/react");
       const session = await getSession();
       
-      const adminRoles = ["ADMIN", "RH", "TRESORIER_SPONSORING", "RESPONSABLE_CELLULE"];
+      const adminRoles = ["ADMIN", "PRESIDENT", "VICE_PRESIDENT", "SECRETAIRE_GENERAL", "RH", "TRESORIER_SPONSORING", "RESPONSABLE_CELLULE"];
       
       if (session?.user?.role && adminRoles.includes(session.user.role)) {
         router.push("/admin");

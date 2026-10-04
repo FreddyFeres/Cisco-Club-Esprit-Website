@@ -11,6 +11,7 @@ import {
   Pencil, Trash2, X, AlertCircle, CheckCircle2,
   Globe, Tag, AlignLeft
 } from "lucide-react";
+import { getSponsors, createSponsor, updateSponsor, deleteSponsor } from "@/actions/sponsors";
 
 type Sponsor = {
   id: string;
@@ -62,10 +63,11 @@ function SponsorModal({ sponsor, onClose, onSaved }: {
       status:  fd.get("status") as string,
     };
     try {
-      const url    = isEdit ? `/api/sponsors/${sponsor!.id}` : "/api/sponsors";
-      const method = isEdit ? "PATCH" : "POST";
-      const res    = await fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      if (!res.ok) throw new Error(await res.text());
+      const res = isEdit 
+        ? await updateSponsor(sponsor!.id, body)
+        : await createSponsor(body);
+        
+      if (res.error) throw new Error(res.error);
       onSaved();
       onClose();
     } catch (err: any) {
@@ -150,7 +152,12 @@ function DeleteModal({ sponsor, onClose, onDeleted }: { sponsor: Sponsor; onClos
 
   const handleDelete = async () => {
     setLoading(true);
-    await fetch(`/api/sponsors/${sponsor.id}`, { method: "DELETE" });
+    const res = await deleteSponsor(sponsor.id);
+    if (res.error) {
+      alert(res.error);
+      setLoading(false);
+      return;
+    }
     onDeleted();
     onClose();
   };
@@ -189,9 +196,8 @@ export default function SponsoringPage() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/sponsors");
-      const data = await res.json();
-      setSponsors(Array.isArray(data) ? data : []);
+      const data = await getSponsors();
+      setSponsors(data);
     } catch {
       setSponsors([]);
     }

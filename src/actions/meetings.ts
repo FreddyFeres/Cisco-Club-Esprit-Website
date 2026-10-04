@@ -12,6 +12,19 @@ export interface MeetingInput {
   organizerId: string;
 }
 
+export async function getMeetingById(id: string) {
+  return prisma.meeting.findUnique({
+    where: { id },
+    include: {
+      participants: { include: { user: true } },
+      agendaItems: { orderBy: { order: "asc" } },
+      minutes: true,
+      actionItems: true,
+    },
+  });
+}
+
+
 export async function createMeeting(data: MeetingInput, participantIds: string[]) {
   try {
     const meeting = await prisma.meeting.create({
@@ -70,5 +83,30 @@ export async function createActionItem(meetingId: string, task: string, assignee
     return { success: true, action };
   } catch (error) {
     return { error: "Erreur lors de la création de l'action." };
+  }
+}
+
+export async function getMeetings() {
+  return prisma.meeting.findMany({
+    orderBy: { startDate: 'desc' },
+    include: {
+      participants: true,
+      agendaItems: true,
+      minutes: true,
+      actionItems: true,
+    }
+  });
+}
+
+export async function deleteMeeting(id: string) {
+  try {
+    await prisma.meetingParticipant.deleteMany({ where: { meetingId: id } });
+    await prisma.agendaItem.deleteMany({ where: { meetingId: id } });
+    await prisma.actionItem.deleteMany({ where: { meetingId: id } });
+    await prisma.meetingMinutes.deleteMany({ where: { meetingId: id } });
+    await prisma.meeting.delete({ where: { id } });
+    return { success: true };
+  } catch (error) {
+    return { error: "Erreur lors de la suppression de la réunion." };
   }
 }

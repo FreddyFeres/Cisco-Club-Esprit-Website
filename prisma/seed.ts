@@ -45,18 +45,16 @@ async function main() {
   const hash = (p: string) => bcrypt.hash(p, 10);
 
   const usersData = [
-    { firstName: "Youssef", lastName: "Gharbi",    email: "youssef.gharbi@esprit.tn",   role: "ADMIN",               cell: cellBureau,  status: "ACTIF",        position: "Président" },
-    { firstName: "Ines",    lastName: "Mahmoud",   email: "ines.mahmoud@esprit.tn",     role: "RH",                  cell: cellBureau,  status: "ACTIF",        position: "Vice-Présidente & RH" },
-    { firstName: "Khalil",  lastName: "Ferjani",   email: "khalil.ferjani@esprit.tn",   role: "TRESORIER_SPONSORING", cell: cellSponsor, status: "ACTIF",        position: "Trésorier" },
-    { firstName: "Ahmed",   lastName: "Ben Ali",   email: "ahmed.benali@esprit.tn",     role: "RESPONSABLE_CELLULE", cell: cellTech,    status: "ACTIF",        position: "Resp. Cellule Technique" },
-    { firstName: "Fatma",   lastName: "Oueslati",  email: "fatma.oueslati@esprit.tn",   role: "MEMBRE",              cell: cellTech,    status: "ACTIF",        position: "Ingénieure Réseau" },
-    { firstName: "Sami",    lastName: "Trabelsi",  email: "sami.trabelsi@esprit.tn",    role: "RESPONSABLE_CELLULE", cell: cellEvent,   status: "ACTIF",        position: "Resp. Événementiel" },
-    { firstName: "Mariem",  lastName: "Chaabane",  email: "mariem.chaabane@esprit.tn",  role: "MEMBRE",              cell: cellEvent,   status: "ACTIF",        position: "Chargée d'événements" },
-    { firstName: "Oussama", lastName: "Riahi",     email: "oussama.riahi@esprit.tn",    role: "MEMBRE",              cell: cellCom,     status: "ACTIF",        position: "Community Manager" },
-    { firstName: "Nour",    lastName: "Belhaj",    email: "nour.belhaj@esprit.tn",      role: "MEMBRE",              cell: cellSponsor, status: "ACTIF",        position: "Chargée de Partenariats" },
-    { firstName: "Aziz",    lastName: "Belhadj",   email: "aziz.belhadj@esprit.tn",     role: "MEMBRE",              cell: cellTech,    status: "PERIODE_ESSAI", position: "Stagiaire Réseau" },
-    { firstName: "Hana",    lastName: "Mestiri",   email: "hana.mestiri@esprit.tn",     role: "MEMBRE",              cell: cellEvent,   status: "PERIODE_ESSAI", position: "Stagiaire Événements" },
-    { firstName: "Rami",    lastName: "Khelifi",   email: "rami.khelifi@esprit.tn",     role: "MEMBRE",              cell: cellCom,     status: "ACTIF",        position: "Graphiste" },
+    { firstName: "Sayad",         lastName: "Touati",    email: "touati.sayad@esprit.tn",        role: "PRESIDENT",            cell: cellBureau,  status: "ACTIF", position: "Président" },
+    { firstName: "Mokhtar",       lastName: "Laourine",  email: "laourine.mokhtar@esprit.tn",    role: "VICE_PRESIDENT",       cell: cellBureau,  status: "ACTIF", position: "Vice-Président" },
+    { firstName: "Zaineb",        lastName: "Trad",      email: "trad.zaineb@esprit.tn",         role: "ADMIN",                cell: cellBureau,  status: "ACTIF", position: "Admin" },
+    { firstName: "Maram",         lastName: "Jaouadi",   email: "jaouadi.maram@esprit.tn",       role: "SECRETAIRE_GENERAL",   cell: cellBureau,  status: "ACTIF", position: "Secrétaire Général" },
+    { firstName: "Maram",         lastName: "Azri",      email: "azri.maram@esprit.tn",          role: "RH",                   cell: cellBureau,  status: "ACTIF", position: "Responsable RH" },
+    { firstName: "Faten",         lastName: "Karou",     email: "karou.faten@esprit.tn",         role: "TRESORIER_SPONSORING", cell: cellSponsor, status: "ACTIF", position: "Trésorière" },
+    { firstName: "Ines",          lastName: "Bouzid",    email: "bouzid.ines@esprit.tn",         role: "RESPONSABLE_CELLULE",  cell: cellEvent,   status: "ACTIF", position: "Responsable Événementiel" },
+    { firstName: "Imen",          lastName: "Cheikh",    email: "cheikh.imen@esprit.tn",         role: "RESPONSABLE_CELLULE",  cell: cellCom,     status: "ACTIF", position: "Responsable Communication" },
+    { firstName: "Malek",         lastName: "Nahal",     email: "nahal.malek@esprit.tn",         role: "RESPONSABLE_CELLULE",  cell: cellTech,    status: "ACTIF", position: "Responsable Technique" },
+    { firstName: "Mohamed Amine", lastName: "Lbabda",    email: "lbabda.mohamedamine@esprit.tn", role: "ADMIN",                cell: cellBureau,  status: "ACTIF", position: "Admin" },
   ];
 
   const createdUsers: any[] = [];
