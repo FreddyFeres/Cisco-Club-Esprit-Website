@@ -289,8 +289,8 @@ export default function Home() {
           )}
         </motion.nav>
 
-        <main className="relative z-20 flex flex-col items-center justify-center min-h-[calc(100vh-90px)] px-6 text-center">
-          <motion.div variants={staggerContainer} initial="hidden" animate="show" className="max-w-5xl mx-auto">
+        <main className="relative z-20 flex flex-col items-center justify-center min-h-[calc(100vh-90px)] px-6 text-center gap-0">
+          <motion.div variants={staggerContainer} initial="hidden" animate="show" className="max-w-5xl mx-auto w-full">
             <motion.div variants={itemFadeUp} className="mb-6 flex justify-center">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-sm font-medium">
                 <span className="relative flex h-2 w-2">
@@ -318,20 +318,19 @@ export default function Home() {
                 Decouvrir le Club
               </Link>
             </motion.div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.4, duration: 0.8 }}
-            className="mt-12 md:mt-0 md:absolute md:bottom-10 left-1/2 md:-translate-x-1/2 flex flex-wrap justify-center gap-6 md:gap-16 w-full px-4"
-          >
-            {[["150+", "Membres Actifs"], ["20+", "Evenements/An"], ["4", "Sponsors Officiels"], ["5", "Cellules"]].map(([num, label]) => (
-              <div key={label} className="text-center min-w-[100px]">
-                <div className="text-2xl md:text-3xl font-bold text-white">{num}</div>
-                <div className="text-[10px] md:text-xs text-cyan-400 mt-1 font-medium uppercase tracking-wider">{label}</div>
-              </div>
-            ))}
+            {/* Stats — always below the buttons, never overlapping */}
+            <motion.div
+              variants={itemFadeUp}
+              className="mt-14 pt-10 border-t border-white/10 flex flex-wrap justify-center gap-8 md:gap-16 w-full"
+            >
+              {[["150+", "Membres Actifs"], ["20+", "Evenements/An"], ["4", "Sponsors Officiels"], ["5", "Cellules"]].map(([num, label]) => (
+                <div key={label} className="text-center min-w-[80px]">
+                  <div className="text-3xl md:text-4xl font-extrabold text-white">{num}</div>
+                  <div className="text-[10px] md:text-xs text-cyan-400 mt-1.5 font-semibold uppercase tracking-wider">{label}</div>
+                </div>
+              ))}
+            </motion.div>
           </motion.div>
         </main>
       </section>
