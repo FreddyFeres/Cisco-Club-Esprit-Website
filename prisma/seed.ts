@@ -55,6 +55,7 @@ async function main() {
     { firstName: "Imen",          lastName: "Cheikh",    email: "cheikh.imen@esprit.tn",         role: "RESPONSABLE_CELLULE",  cell: cellCom,     status: "ACTIF", position: "Responsable Communication" },
     { firstName: "Malek",         lastName: "Nahal",     email: "nahal.malek@esprit.tn",         role: "RESPONSABLE_CELLULE",  cell: cellTech,    status: "ACTIF", position: "Responsable Technique" },
     { firstName: "Mohamed Amine", lastName: "Lbabda",    email: "lbabda.mohamedamine@esprit.tn", role: "ADMIN",                cell: cellBureau,  status: "ACTIF", position: "Admin" },
+    { firstName: "Feres",         lastName: "Fatmi",     email: "feresfatmi07@gmail.com",        role: "ADMIN",                cell: cellBureau,  status: "ACTIF", position: "Business Analyst & Media Supervisor" },
   ];
 
   const createdUsers: any[] = [];

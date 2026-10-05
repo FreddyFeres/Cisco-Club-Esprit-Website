@@ -16,5 +16,5 @@ Mot de passe : Cisco@2024
 | Imen Cheikh           | cheikh.imen@esprit.tn              | RESPONSABLE_CELLULE   |
 | Malek Nahal           | nahal.malek@esprit.tn              | RESPONSABLE_CELLULE   |
 | Mohamed Amine Lbabda  | lbabda.mohamedamine@esprit.tn      | ADMIN                 |
-
+| Feres Fatmi           | feresfatmi07@gmail.com             |Admin                  |
 Note : Ces comptes proviennent du fichier de seed (prisma/seed.ts) utilisé pour initialiser la base de données.
